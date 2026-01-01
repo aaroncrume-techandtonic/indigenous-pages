@@ -1,0 +1,102 @@
+<div class="slot-machine">
+  <div class="reel-group main-group">
+    <div class="reel-window" id="window-1"><div class="reel-strip"></div></div>
+    <div class="reel-window" id="window-2"><div class="reel-strip"></div></div>
+    <div class="reel-window" id="window-3"><div class="reel-strip"></div></div>
+    <div class="reel-window" id="window-4"><div class="reel-strip"></div></div>
+    <div class="reel-window" id="window-5"><div class="reel-strip"></div></div>
+  </div>
+  
+  <div class="divider"></div>
+
+  <div class="reel-group special-group">
+    <div class="reel-window special-window" id="window-6"><div class="reel-strip"></div></div>
+  </div>
+</div>
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerCrypto Lotto Generator</title>
+    <meta name="description" content="A cryptographically secure lottery number generator with slot machine simulation.">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+    <div class="main-container">
+        <header class="game-header">
+            <h1 class="game-title" data-text="MEGA CRYPTO LOTTO">MEGA CRYPTO LOTTO</h1>
+            <p class="game-subtitle">Cryptographically Secure Random Generation</p>
+        </header>
+        
+        <div class="slot-machine-frame">
+            <div class="cabinet-lights">
+                <div class="light"></div><div class="light"></div><div class="light"></div>
+                <div class="light"></div><div class="light"></div><div class="light"></div>
+            </div>
+
+            <div class="reels-container">
+                <div class="group-standard">
+                    <div class="reel-wrapper">
+                        <div class="reel" id="reel-1"></div>
+                        <div class="reel-overlay"></div>
+                    </div>
+                    <div class="reel-wrapper">
+                        <div class="reel" id="reel-2"></div>
+                        <div class="reel-overlay"></div>
+                    </div>
+                    <div class="reel-wrapper">
+                        <div class="reel" id="reel-3"></div>
+                        <div class="reel-overlay"></div>
+                    </div>
+                    <div class="reel-wrapper">
+                        <div class="reel" id="reel-4"></div>
+                        <div class="reel-overlay"></div>
+                    </div>
+                    <div class="reel-wrapper">
+                        <div class="reel" id="reel-5"></div>
+                        <div class="reel-overlay"></div>
+                    </div>
+                </div>
+                
+                <div class="divider"></div>
+
+                <div class="group-special">
+                    <div class="reel-wrapper special-wrapper">
+                        <div class="reel special-reel" id="reel-6"></div>
+                        <div class="reel-overlay"></div>
+                        <div class="label-special">PB</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="controls-area">
+                <button id="spin-btn" class="spin-button">
+                    <span class="btn-text">GENERATE TICKET</span>
+                    <span class="btn-shine"></span>
+                </button>
+            </div>
+            
+            <div id="status-bar" class="status-bar" aria-live="polite">Ready to Spin</div>
+        </div>
+
+        <footer class="footer-info">
+            <p><strong>RNG Method:</strong> window.crypto.getRandomValues()</p>
+            <p><strong>Standard Pool:</strong> 5 Unique from 1-69 | <strong>Special Pool:</strong> 1 from 1-26</p>
+            <p>Source Code Available for Inspection</p>
+        </footer>
+    </div>
+
+    <audio id="sound-spin" src="https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3" preload="auto"></audio>
+    <audio id="sound-stop" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3" preload="auto"></audio>
+    <audio id="sound-win" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3" preload="auto"></audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
