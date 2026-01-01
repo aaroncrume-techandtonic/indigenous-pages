@@ -1,356 +1,64 @@
-/* =========================================
-   1. VARIABLES & RESET
-   ========================================= */
-:root {
-    /* Color Palette */
-    --gold-dark: #b48927;
-    --gold-light: #ffe996;
-    --gold-mid: #d4af37;
-    --chrome-dark: #2c3e50;
-    --chrome-light: #bdc3c7;
-    --cabinet-bg: #111;
-    --reel-bg: #f8f9fa;
-    --reel-text: #2c3e50;
-    --special-bg: #000;
-    --special-text: #e74c3c; /* Red color for special ball */
-    
-    /* Dimensions */
-    --reel-w: 80px;
-    --reel-h: 120px;
-    --font-size: 3.5rem;
-    
-    /* Animation Timings */
-    --ease-elastic: cubic-bezier(0.19, 1, 0.22, 1); /* Custom ease-out */
-}
+<style>
+        /* Custom Palette - Vibrant "River & Earth" */
+        :root {
+            --color-teal: #2A9D8F;
+            --color-salmon: #E76F51;
+            --color-sand: #E9C46A;
+            --color-slate: #264653;
+            --color-white: #F1FAEE;
+        }
 
-*, *::before, *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    user-select: none; /* Prevent text selection during rapid clicking */
-}
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--color-white);
+            color: var(--color-slate);
+            overflow-x: hidden;
+        }
 
-body {
-    background-color: #050505;
-    background-image: 
-        radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000000 100%);
-    font-family: 'Arial Black', 'Impact', sans-serif;
-    color: white;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow-x: hidden;
-}
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+        }
 
-/* =========================================
-   2. TYPOGRAPHY & HEADER
-   ========================================= */
-.game-header {
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-.game-title {
-    font-size: 3rem;
-    text-transform: uppercase;
-    /* Metallic Gold Text Effect */
-    background: linear-gradient(to bottom, var(--gold-light) 0%, var(--gold-dark) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    filter: drop-shadow(0 2px 0px rgba(0,0,0,0.5));
-    position: relative;
-}
-
-.game-subtitle {
-    color: #666;
-    font-family: monospace;
-    letter-spacing: 2px;
-    margin-top: 0.5rem;
-    font-size: 0.8rem;
-}
-
-/* =========================================
-   3. CABINET ARCHITECTURE
-   ========================================= */
-.slot-machine-frame {
-    background: #000;
-    padding: 25px;
-    border-radius: 20px;
-    position: relative;
-    
-    /* The Metallic Bezel */
-    border: 8px solid transparent;
-    border-image-source: linear-gradient(
-        135deg, 
-        var(--gold-dark) 0%, 
-        var(--gold-light) 25%, 
-        var(--gold-dark) 50%, 
-        var(--gold-light) 75%, 
-        var(--gold-dark) 100%
-    );
-    border-image-slice: 1;
-    
-    box-shadow: 
-        0 0 30px rgba(180, 137, 39, 0.3), /* Gold Glow */
-        inset 0 0 50px rgba(0,0,0,0.9);   /* Inner Depth */
-}
-
-/* The Blinking Lights (Purely cosmetic) */
-.cabinet-lights {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
-    padding: 0 10px;
-}
-
-.light {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: #444;
-    box-shadow: inset 0 0 2px #000;
-    animation: blink 2s infinite alternate;
-}
-
-/* Stagger animations for lights */
-.light:nth-child(even) { animation-delay: 0.5s; }
-.light:nth-child(3n) { animation-delay: 1s; }
-
-@keyframes blink {
-    0% { background: #444; box-shadow: none; }
-    100% { background: #f1c40f; box-shadow: 0 0 10px #f1c40f; }
-}
-
-/* =========================================
-   4. REELS CONTAINER
-   ========================================= */
-.reels-container {
-    display: flex;
-    gap: 15px;
-    background: #111;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: inset 0 0 20px #000;
-    align-items: center;
-}
-
-.group-standard {
-    display: flex;
-    gap: 10px;
-}
-
-.divider {
-    width: 2px;
-    height: 100px;
-    background: #333;
-    box-shadow: 1px 0 0 #000;
-}
-
-/* =========================================
-   5. REEL WINDOW & STRIP
-   ========================================= */
-.reel-wrapper {
-    width: var(--reel-w);
-    height: var(--reel-h);
-    background: var(--reel-bg);
-    overflow: hidden; /* CRITICAL: Creates the viewport */
-    border-radius: 8px;
-    position: relative;
-    border: 2px solid #333;
-    /* Inner shadow to simulate glass curvature */
-    box-shadow: inset 0 0 15px rgba(0,0,0,0.6);
-}
-
-.reel {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    /* Hardware Acceleration Hints */
-    will-change: transform;
-    transform: translateZ(0); 
-    text-align: center;
-}
-
-.reel-number {
-    height: var(--reel-h); /* Must match wrapper height */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: var(--font-size);
-    font-weight: 900;
-    color: var(--reel-text);
-    /* Improve font rendering */
-    -webkit-font-smoothing: antialiased;
-}
-
-/* Glass Glare Overlay */
-.reel-overlay {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(
-        to bottom,
-        rgba(0,0,0,0.5) 0%,
-        rgba(255,255,255,0.1) 30%,
-        rgba(255,255,255,0) 50%,
-        rgba(0,0,0,0.5) 100%
-    );
-    pointer-events: none; /* Let clicks pass through if needed */
-    z-index: 5;
-}
-
-/* =========================================
-   6. SPECIAL REEL STYLING
-   ========================================= */
-.special-wrapper {
-    border-color: var(--special-text);
-    background: #222; /* Darker background for special ball */
-}
-
-.special-reel.reel-number {
-    color: var(--special-text);
-    text-shadow: 0 0 5px rgba(231, 76, 60, 0.5);
-}
-
-.label-special {
-    position: absolute;
-    bottom: 2px;
-    right: 2px;
-    font-size: 0.6rem;
-    color: #fff;
-    background: var(--special-text);
-    padding: 1px 3px;
-    border-radius: 3px;
-    z-index: 6;
-    opacity: 0.8;
-}
-
-/* =========================================
-   7. CONTROLS
-   ========================================= */
-.controls-area {
-    margin-top: 30px;
-    text-align: center;
-}
-
-.spin-button {
-    position: relative;
-    padding: 20px 60px;
-    font-size: 1.5rem;
-    font-weight: bold;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    overflow: hidden;
-    
-    /* Golden Button Gradient */
-    background: linear-gradient(to bottom, #f1c40f, #f39c12);
-    color: #5c3c00;
-    
-    /* 3D Button Effect */
-    box-shadow: 
-        0 6px 0 #d35400, /* The "Side" of the button */
-        0 15px 20px rgba(0,0,0,0.4); /* Drop Shadow */
+        .bg-teal { background-color: var(--color-teal); }
+        .bg-salmon { background-color: var(--color-salmon); }
+        .bg-slate { background-color: var(--color-slate); }
+        .bg-sand { background-color: var(--color-sand); }
         
-    transition: transform 0.1s, box-shadow 0.1s;
-}
+        .text-teal { color: var(--color-teal); }
+        .text-salmon { color: var(--color-salmon); }
+        .text-slate { color: var(--color-slate); }
+        .text-sand { color: var(--color-sand); }
 
-.spin-button:active {
-    transform: translateY(6px); /* Move down */
-    box-shadow: 
-        0 0 0 #d35400, /* Hide the side */
-        inset 0 0 10px rgba(0,0,0,0.4); /* Inner shadow */
-}
+        /* Chart Container Styling - MANDATORY */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
 
-.spin-button:disabled {
-    filter: grayscale(100%);
-    cursor: not-allowed;
-    transform: translateY(2px);
-    box-shadow: 0 4px 0 #555;
-}
-
-/* Shiny sweep animation on button */
-.btn-shine {
-    position: absolute;
-    top: 0; left: -100%;
-    width: 50%; height: 100%;
-    background: linear-gradient(
-        to right,
-        rgba(255,255,255,0) 0%,
-        rgba(255,255,255,0.6) 50%,
-        rgba(255,255,255,0) 100%
-    );
-    transform: skewX(-20deg);
-    animation: shine-sweep 3s infinite;
-}
-
-@keyframes shine-sweep {
-    0% { left: -100%; }
-    20% { left: 200%; }
-    100% { left: 200%; }
-}
-
-.status-bar {
-    margin-top: 15px;
-    color: #888;
-    font-size: 0.9rem;
-    min-height: 1.2em;
-}
-
-.footer-info {
-    margin-top: 50px;
-    text-align: center;
-    color: #444;
-    font-size: 0.75rem;
-    line-height: 1.5;
-}
-
-/* =========================================
-   8. RESPONSIVE MEDIA QUERIES
-   ========================================= */
-@media (max-width: 768px) {
-    /* Scale down the entire frame for tablets */
-   .slot-machine-frame {
-        transform: scale(0.8);
-    }
-}
-
-@media (max-width: 600px) {
-    /* Mobile Layout Refactor */
-   .reels-container {
-        flex-direction: column;
-        gap: 20px;
-        background: transparent;
-        box-shadow: none;
-    }
-    
-   .group-standard {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-    
-   .divider {
-        width: 100%;
-        height: 2px;
-        margin: 10px 0;
-    }
-    
-    :root {
-        --reel-w: 60px;
-        --reel-h: 90px;
-        --font-size: 2.5rem;
-    }
-    
-   .slot-machine-frame {
-        transform: none;
-        width: 95%;
-        padding: 15px;
-    }
-    
-   .spin-button {
-        padding: 15px 40px;
-        font-size: 1.2rem;
-    }
-}
+        /* Timeline Styling */
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: var(--color-sand);
+            transform: translateX(-50%);
+        }
+        
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
