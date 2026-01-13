@@ -1,4 +1,5 @@
- <script>
+  <!-- SCRIPTS -->
+    <script>
         // --- PALETTE VARIABLES FOR JS (High Contrast) ---
         const colors = {
             red: '#C62828',    // Deep Red
