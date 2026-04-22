@@ -1,7 +1,5 @@
-  <!-- SCRIPTS -->
-    <script>
-        // --- PALETTE VARIABLES FOR JS (High Contrast) ---
-        const colors = {
+// --- PALETTE VARIABLES FOR JS (High Contrast) ---
+const colors = {
             red: '#C62828',    // Deep Red
             yellow: '#FFD600', // Bright Yellow
             black: '#121212',  // True Black
@@ -9,34 +7,34 @@
             water: '#004D40',  // Deep Teal
             slate: '#263238',
             goldText: '#827717' // Dark Ochre for text labels
-        };
+    };
 
         // --- UTILITY: LABEL WRAPPING ---
-        function formatLabel(str, maxwidth) {
-            if (typeof str !== 'string') return str;
-            var sections = [];
-            var words = str.split(" ");
-            var temp = "";
-            words.forEach(function(item, index) {
-                if (temp.length > 0) {
-                    var concat = temp + ' ' + item;
-                    if (concat.length > maxwidth) {
-                        sections.push(temp);
-                        temp = item;
-                    } else {
-                        temp = concat;
-                    }
-                } else {
-                    temp = item;
-                }
-            });
-            if (temp.length > 0) sections.push(temp);
-            return sections;
+function formatLabel(str, maxwidth) {
+    if (typeof str !== 'string') return str;
+    var sections = [];
+    var words = str.split(" ");
+    var temp = "";
+    words.forEach(function(item, index) {
+        if (temp.length > 0) {
+            var concat = temp + ' ' + item;
+            if (concat.length > maxwidth) {
+                sections.push(temp);
+                temp = item;
+            } else {
+                temp = concat;
+            }
+        } else {
+            temp = item;
         }
+    });
+    if (temp.length > 0) sections.push(temp);
+    return sections;
+}
 
         // --- CHART 1: DAM LIFESPAN (Bar) ---
-        const ctxDam = document.getElementById('damChart').getContext('2d');
-        const damChart = new Chart(ctxDam, {
+    const ctxDam = document.getElementById('damChart').getContext('2d');
+    const damChart = new Chart(ctxDam, {
             type: 'bar',
             data: {
                 labels: ['Iron Gate', 'Copco 1', 'Copco 2', 'J.C. Boyle'],
@@ -83,8 +81,8 @@
         });
 
         // --- CHART 2: LAND STEWARDSHIP (Doughnut) ---
-        const ctxLand = document.getElementById('landChart').getContext('2d');
-        const landChart = new Chart(ctxLand, {
+    const ctxLand = document.getElementById('landChart').getContext('2d');
+    const landChart = new Chart(ctxLand, {
             type: 'doughnut',
             data: {
                 labels: [
@@ -129,8 +127,8 @@
         });
 
         // --- CHART 3: SALMON RECOVERY (Line) ---
-        const ctxSalmon = document.getElementById('salmonChart').getContext('2d');
-        const salmonChart = new Chart(ctxSalmon, {
+    const ctxSalmon = document.getElementById('salmonChart').getContext('2d');
+    const salmonChart = new Chart(ctxSalmon, {
             type: 'line',
             data: {
                 labels: ['1900', '1950', '2002', '2023', '2030', '2050'],
@@ -180,7 +178,7 @@
         });
 
         // --- CHART 4: PLOTLY (River Miles - Gauge) ---
-        const trace1 = {
+    const trace1 = {
             type: 'indicator',
             mode: 'number+gauge+delta',
             value: 420,
@@ -204,16 +202,14 @@
                     { range: [400, 500], color: colors.water }
                 ],
             }
-        };
+    };
 
-        const layoutPlotly = { 
+    const layoutPlotly = {
             font: { family: "Lato", color: "black" },
             paper_bgcolor: "rgba(0,0,0,0)",
             margin: { t: 40, r: 25, l: 25, b: 25 }
-        };
+    };
 
-        const configPlotly = { responsive: true, displayModeBar: false };
-        
-        Plotly.newPlot('riverPlot', [trace1], layoutPlotly, configPlotly);
+const configPlotly = { responsive: true, displayModeBar: false };
 
-    </script>
+Plotly.newPlot('riverPlot', [trace1], layoutPlotly, configPlotly);
